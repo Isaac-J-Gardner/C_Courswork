@@ -7,8 +7,13 @@ int main(){
 
     char test[100];
 
-    while(fgets(test, 100, fptr)){
-        printf("%s", test);
+    if(fptr != NULL){
+        while(fgets(test, 100, fptr)){
+            printf("%s", test);
+        }
+    }
+    else{
+        printf("unable to locate or open file");
     }
 
     fclose(fptr);
