@@ -1,10 +1,43 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+
+int map_prob(int position[2], char map[9][9]){
+    srand(144);
+    int moves[8][2] = {{1,0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, -1}, {1, -1}};
+    int total_steps = 0;
+    int successful_runs = 0;
+    for(int i = 0; i < 1000; i++){
+        int current_position[2] = position;
+        for(int steps = 0; steps <= 10; steps++){
+            if(map[current_position[1]][current_position[0]] == "B"){
+                printf("run %d succeeded with: %d steps", i, steps);
+                successful_runs += 1;
+                total_steps += steps;
+                break;
+            }
+            else if(map[current_position[1]][current_position[0]] != "L"){
+                printf("run %d failed with: %d steps", i, steps);
+                total_steps += steps;
+                break;
+            }
+            else if(steps == 10){
+                printf("run %d failed by exceeding the step limit", i);
+                total_steps += steps;
+                break;
+            }
+            int move[2] = moves[rand() % 8];
+
+        }
+        
+    }
+    return 0;
+}
 
 int main(){
     char map[9][9]; //this will hold the 9x9 grid of characters read from the .txt file
 
-    FILE *fptr; //this is a pointer to the FILE structure that will hold information about the opened file
+    FILE *fptr; 
 
     fptr = fopen("island_map.txt", "r");
 
