@@ -2,21 +2,18 @@
 #include <string.h>
 
 int main() {
-    char test[100];
-    FILE *fptr;
+    char string[] = "Hello World";
+    char *token;
 
-    fptr = fopen("island_map.txt", "r");
+    // Tokenize the string using strtok()
+    token = strtok(string, " ");
 
-    if (fptr != NULL){
-        fgets(test, 100, fptr);
+    // Print the first token
+    if (token != NULL) {
+        printf("First token: %s\n", token);
+    } else {
+        printf("No token found.\n");
     }
-    else{
-        printf("could not retrieve file");
-    }
-
-    printf("%zu", strlen(test));
-
-    fclose(fptr);
 
     return 0;
 }
