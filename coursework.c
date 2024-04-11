@@ -42,6 +42,11 @@ int main(){
 
             while (token != NULL && i < 9) {
 
+                if(strlen(token) != 1){ //we should only be getting 1 character, if there is more than 1, its not formatted correctly
+                    printf("Error.");
+                    return 1;
+                }
+
                 map[j][i] = token[0];
                 token = strtok(NULL, " ");
 
