@@ -5,6 +5,7 @@ int main(){
     char map[9][9];
     char *token;
     char test[100];
+    size_t length = 19;
     FILE *fptr;
 
     fptr = fopen("island_map.txt", "r");
@@ -12,15 +13,13 @@ int main(){
     if(fptr != NULL){
         int j = 0;
         while(fgets(test, 100, fptr) && j < 9){
-            if(test[0] == "\n"){
+            if(strlen(test) < length){
                 continue;
             }
-            printf("%s", test);
             token = strtok(test, " ");
 
             int i = 0;
             while (token != NULL && i < 9) {
-                printf("%s", token);
                 map[j][i] = token[0];
                 token = strtok(NULL, " "); // Get the next token
                 i++;
@@ -33,6 +32,13 @@ int main(){
     }
 
     fclose(fptr);
+
+    for(int i = 0; i < 9; i++){
+        for(int j = 0; j < 9; j++){
+            printf("%c ", map[i][j]);
+        }
+        printf("\n");
+    }
 
     return 0;
 }

@@ -2,21 +2,21 @@
 #include <string.h>
 
 int main() {
-    char sentence[] = "Hello, World!";
-    char *token;
+    char test[100];
+    FILE *fptr;
 
-    // Tokenize the string using strtok()
-    token = strtok(sentence, " ");
+    fptr = fopen("island_map.txt", "r");
 
-    // Process each token
-    while (token != NULL) {
-        // Print each character of the token
-        for (int i = 0; token[i] != '\0'; i++) {
-            printf("%c\n", token[i]);
-        }
-        // Get the next token
-        token = strtok(NULL, " ");
+    if (fptr != NULL){
+        fgets(test, 100, fptr);
     }
+    else{
+        printf("could not retrieve file");
+    }
+
+    printf("%zu", strlen(test));
+
+    fclose(fptr);
 
     return 0;
 }
