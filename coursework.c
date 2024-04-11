@@ -47,7 +47,7 @@ int main(){
                     return 1;
                 }
 
-                map[j][i] = token[0];
+                map[j][i] = token[0]; //add to map and get next token
                 token = strtok(NULL, " ");
 
                 i++;
@@ -62,7 +62,7 @@ int main(){
 
     fclose(fptr);
 
-    for(int i = 0; i < 9; i++){
+    for(int i = 0; i < 9; i++){ //displaying the map
         for(int j = 0; j < 9; j++){
             printf("%c ", map[i][j]);
         }
