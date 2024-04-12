@@ -1,12 +1,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
-double map_prob(int position[2], char map[9][9], double *avg_steps, double *success_perc){
-    srand(144);
+double map_prob(int position[2], char map[9][9], double *avg_steps, double *success_perc, double *std_dev){
+    srand(123456);
     int moves[8][2] = {{1,0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, -1}, {1, -1}};
     int total_steps = 0;
     int successful_runs = 0;
+    int run_steps[1000];
 
     for(int i = 0; i < 1000; i++){
 
@@ -17,27 +19,40 @@ double map_prob(int position[2], char map[9][9], double *avg_steps, double *succ
             if(current_letter == 'B'){
                 successful_runs += 1;
                 total_steps += steps;
+                run_steps[i] = steps;
                 break;
             }
             else if(current_letter != 'L'){
                 total_steps += steps;
+                run_steps[i] = steps;
                 break;
             }
             else if(steps == 10){
                 total_steps += steps;
+                run_steps[i] = steps;
                 break;
             }
             int move_val = rand() % 8;
             int move[2] = {moves[move_val][0], moves[move_val][1]};
-            int temp1 = current_position[0] + move[0];
-            int temp2 = current_position[1] + move[1];
-            current_position[0] = temp1;
-            current_position[1] = temp2;
+            current_position[0] = current_position[0] + move[0];
+            current_position[1] = current_position[1] + move[1];
         }
         
     }
     *avg_steps = total_steps/1000.0;
     *success_perc = successful_runs/10.0;
+
+    //calculating S.D.
+    double tot = 0.0;
+    for(int i = 0; i < 1000; i++){
+        double temp = run_steps[i] - *avg_steps;
+        temp *= temp;
+        tot += temp;
+    }
+
+    tot /= 1000.0;
+    *std_dev = sqrt(tot);
+
     return 0;
 }
 
@@ -114,34 +129,47 @@ int main(){
 
     double perc[9][9];
     double steps_avg[9][9];
+    double standard_deviation[9][9];
     int position[2];
 
-    for(int i = 0; i < 9; i++){ //displaying the map
+    for(int i = 0; i < 9; i++){ //calculating percentage success, average steps, and standard deviation
         for(int j = 0; j < 9; j++){
             position[0] = i;
             position[1] = j;
-            double percentage, average_steps;
-            map_prob(position, map, &percentage, &average_steps);
+            double percentage, average_steps, stand_dev;
+            map_prob(position, map, &average_steps, &percentage, &stand_dev); //for each location in the map, calculate 1000 random walks
             perc[i][j] = percentage;
             steps_avg[i][j] = average_steps;
+            standard_deviation[i][j] = stand_dev;
         }
     }
 
-    for(int i = 0; i < 9; i++){ //displaying the map
+    printf("Probability of escape:\n");
+    for(int i = 0; i < 9; i++){ //displaying the percentage map
         for(int j = 0; j < 9; j++){
-            printf("%7.2lf ", perc[i][j]);
+            printf("%5.2lf ", perc[i][j]);
         }
-        printf("\n\n");
+        printf("\n");
     }
-    printf("\n\n\n");
+    printf("\n");
 
-    for(int i = 0; i < 9; i++){ //displaying the map
+    printf("Mean path length:\n");
+    for(int i = 0; i < 9; i++){ //displaying the average step map
         for(int j = 0; j < 9; j++){
-            printf("%7.2lf ", steps_avg[i][j]);
+            printf("%5.2lf ", steps_avg[i][j]);
         }
-        printf("\n\n");
+        printf("\n");
     }
-    printf("\n\n\n");
+    printf("\n");
+
+    printf("Standard deviation of path length:\n");
+    for(int i = 0; i < 9; i++){ //displaying the standard div map
+        for(int j = 0; j < 9; j++){
+            printf("%5.2lf ", standard_deviation[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
 
     return 0;
 }
