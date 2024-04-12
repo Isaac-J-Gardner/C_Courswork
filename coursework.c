@@ -70,7 +70,7 @@ int main(){
         char *token; //used by strtok. it will point to the location in a string where a given character appears
         char line[30]; //string that holds the line that has been read from the text file
 
-        while(fgets(line, 100, fptr) != NULL && j <= 9){ //if fgets is NULL, the end of the file has been reached. j should equal 8 when this while loop finishes
+        while(fgets(line, 30, fptr) != NULL && j <= 9){ //if fgets is NULL, the end of the file has been reached. j should equal 8 when this while loop finishes
 
             size_t line_length = strlen(line);
 
@@ -120,6 +120,10 @@ int main(){
 
     for(int i = 0; i < 9; i++){ //displaying the map
         for(int j = 0; j < 9; j++){
+            if (j == 8){
+                printf("%c", map[i][j]);
+                continue;
+            }
             printf("%c ", map[i][j]);
         }
         printf("\n");
@@ -147,6 +151,10 @@ int main(){
     printf("Probability of escape:\n");
     for(int i = 0; i < 9; i++){ //displaying the percentage map
         for(int j = 0; j < 9; j++){
+            if (j == 8){
+                printf("%5.2lf", perc[i][j]);
+                continue;
+            }
             printf("%5.2lf ", perc[i][j]);
         }
         printf("\n");
@@ -156,6 +164,10 @@ int main(){
     printf("Mean path length:\n");
     for(int i = 0; i < 9; i++){ //displaying the average step map
         for(int j = 0; j < 9; j++){
+            if (j == 8){
+                printf("%5.2lf", steps_avg[i][j]);
+                continue;
+            }
             printf("%5.2lf ", steps_avg[i][j]);
         }
         printf("\n");
@@ -165,6 +177,10 @@ int main(){
     printf("Standard deviation of path length:\n");
     for(int i = 0; i < 9; i++){ //displaying the standard div map
         for(int j = 0; j < 9; j++){
+            if (j == 8){
+                printf("%5.2lf", standard_deviation[i][j]);
+                continue;
+            }
             printf("%5.2lf ", standard_deviation[i][j]);
         }
         printf("\n");
