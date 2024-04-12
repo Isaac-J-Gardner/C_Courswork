@@ -15,37 +15,29 @@ double map_prob(int position[2], char map[9][9], double *avg_steps, double *succ
         for(int steps = 0; steps <= 10; steps++){
             char current_letter = map[current_position[0]][current_position[1]];
             if(current_letter == 'B'){
-                //printf("run %d succeeded with: %d steps\n", i, steps);
                 successful_runs += 1;
                 total_steps += steps;
                 break;
             }
             else if(current_letter != 'L'){
-                //printf("run %d failed with: %d steps\n", i, steps);
                 total_steps += steps;
                 break;
             }
             else if(steps == 10){
-                //printf("run %d failed by exceeding the step limit\n", i);
                 total_steps += steps;
                 break;
             }
             int move_val = rand() % 8;
-            //printf("%d\n", move_val);
             int move[2] = {moves[move_val][0], moves[move_val][1]};
             int temp1 = current_position[0] + move[0];
             int temp2 = current_position[1] + move[1];
             current_position[0] = temp1;
             current_position[1] = temp2;
-
-            //printf("%d, %d\n", current_position[0], current_position[1]);
         }
         
     }
-    //printf("%d\n", total_steps);
     *avg_steps = total_steps/1000.0;
     *success_perc = successful_runs/10.0;
-    //printf("average steps: %lf, percentage success: %lf", avg_steps, success_perc);
     return 0;
 }
 
