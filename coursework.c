@@ -5,31 +5,26 @@
 
 double map_prob(int position[2], char map[9][9], double *avg_steps, double *success_perc, double *std_dev){
     srand(123456);
-    int moves[8][2] = {{1,0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, -1}, {1, -1}};
+    int moves[8][2] = {{1,0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, -1}, {1, -1}}; //moves go clockwise from north round to north west
     int total_steps = 0;
-    int successful_runs = 0;
-    int run_steps[1000];
+    double successful_runs = 0.0;
+    int run_steps[1000]; //this will be used to calculate standard deviation
 
-    for(int i = 0; i < 1000; i++){
+    for(int i = 0; i < 1000; i++){ //1000 random paths
 
-        int current_position[2] = {position[0], position[1]};
+        int current_position[2] = {position[0], position[1]}; //the start of the path
         
-        for(int steps = 0; steps <= 10; steps++){
+        for(int steps = 0; steps <= 10; steps++){ //10 steps, with the 11th loop for the case where it ran out of steps
+
             char current_letter = map[current_position[0]][current_position[1]];
-            if(current_letter == 'B'){
+
+            if(current_letter == 'B'){ //if successfully escaped
                 successful_runs += 1;
                 total_steps += steps;
                 run_steps[i] = steps;
                 break;
             }
-            else if(current_letter != 'L'){
-                total_steps += steps;
-                run_steps[i] = steps;
-                break;
-            }
-            else if(steps == 10){
-                total_steps += steps;
-                run_steps[i] = steps;
+            else if(current_letter != 'L' || steps == 10){ //if the run fails
                 break;
             }
             int move_val = rand() % 8;
@@ -39,19 +34,23 @@ double map_prob(int position[2], char map[9][9], double *avg_steps, double *succ
         }
         
     }
-    *avg_steps = total_steps/1000.0;
-    *success_perc = successful_runs/10.0;
+    if(successful_runs != 0){
+        *avg_steps = total_steps/successful_runs;
+        double tot = 0.0;
+        for(int i = 0; i < successful_runs; i++){
+            double temp = run_steps[i] - *avg_steps;
+            temp *= temp;
+            tot += temp;
+        }
 
-    //calculating S.D.
-    double tot = 0.0;
-    for(int i = 0; i < 1000; i++){
-        double temp = run_steps[i] - *avg_steps;
-        temp *= temp;
-        tot += temp;
+        tot = tot/successful_runs;
+        *std_dev = sqrt(tot);
     }
-
-    tot /= 1000.0;
-    *std_dev = sqrt(tot);
+    else{
+        *avg_steps = 0;
+        *std_dev = 0;
+    }
+    *success_perc = successful_runs/10.0;
 
     return 0;
 }
@@ -101,6 +100,11 @@ int main(){
                         return 1;
                     }
                     
+                }
+
+                if(token[0] != 'B' && token[0] != 'W' && token[0] != 'L' && token[0] != 'D' && token[0] != 'V'){
+                    printf("Error.");
+                    return 1;
                 }
 
                 map[j][i] = token[0]; //add to map and get next token
