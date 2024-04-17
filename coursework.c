@@ -5,18 +5,21 @@
 
 double map_prob(int position[2], char map[9][9], double *avg_steps, double *success_perc, double *std_dev){
     srand(123456);
-    int moves[8][2] = {{1,0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, -1}, {1, -1}}; //moves go clockwise from north round to north west
+    int moves[8][2] = {{-1,0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}}; //moves go clockwise from north round to north west
     int total_steps = 0;
     double successful_runs = 0.0;
     int run_steps[1000]; //this will be used to calculate standard deviation
 
     for(int i = 0; i < 1000; i++){ //1000 random paths
 
+        char path[10] = {'-','-','-','-','-','-','-','-','-','-'};
+
         int current_position[2] = {position[0], position[1]}; //the start of the path
         
         for(int steps = 0; steps <= 10; steps++){ //10 steps, with the 11th loop for the case where it ran out of steps
 
             char current_letter = map[current_position[0]][current_position[1]];
+            path[steps] = current_letter;
 
             if(current_letter == 'B'){ //if successfully escaped
                 successful_runs += 1;
@@ -32,6 +35,8 @@ double map_prob(int position[2], char map[9][9], double *avg_steps, double *succ
             current_position[0] = current_position[0] + move[0];
             current_position[1] = current_position[1] + move[1];
         }
+
+        printf("%s\n", path);
         
     }
     if(successful_runs != 0){
