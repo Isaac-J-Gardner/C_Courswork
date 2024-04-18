@@ -155,10 +155,10 @@ int main(){
     for(int i = 0; i < 9; i++){ //displaying the percentage map
         for(int j = 0; j < 9; j++){
             if (j == 8){
-                printf("%5.2lf", perc[i][j]);
+                printf("%7.2lf", perc[i][j]);
                 continue;
             }
-            printf("%5.2lf ", perc[i][j]);
+            printf("%7.2lf ", perc[i][j]);
         }
         printf("\n");
     }
@@ -168,10 +168,10 @@ int main(){
     for(int i = 0; i < 9; i++){ //displaying the average step map
         for(int j = 0; j < 9; j++){
             if (j == 8){
-                printf("%5.2lf", steps_avg[i][j]);
+                printf("%4.2lf", steps_avg[i][j]);
                 continue;
             }
-            printf("%5.2lf ", steps_avg[i][j]);
+            printf("%4.2lf ", steps_avg[i][j]);
         }
         printf("\n");
     }
@@ -181,10 +181,10 @@ int main(){
     for(int i = 0; i < 9; i++){ //displaying the standard div map
         for(int j = 0; j < 9; j++){
             if (j == 8){
-                printf("%5.2lf", standard_deviation[i][j]);
+                printf("%4.2lf", standard_deviation[i][j]);
                 continue;
             }
-            printf("%5.2lf ", standard_deviation[i][j]);
+            printf("%4.2lf ", standard_deviation[i][j]);
         }
         printf("\n");
     }
