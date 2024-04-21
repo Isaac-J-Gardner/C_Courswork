@@ -10,9 +10,9 @@ double map_prob(int position[2], char map[9][9], double *avg_steps, double *succ
     int run_steps[1000]; //this will be used to calculate standard deviation
     for(int i = 0; i < 1000; i++){ //1000 random paths
         int current_position[2] = {position[0], position[1]}; //the start of the path
-        for(int steps = 0; steps < 10; steps++){ //10 steps, with the 11th loop for the case where it ran out of steps
+        for(int steps = 0; steps <= 10; steps++){ //10 steps, with the 11th loop for the case where it ran out of steps
             char current_letter = map[current_position[0]][current_position[1]];
-            if(current_letter != 'L' || steps == 9){ //if one of these is satisfied, the run has ended
+            if(current_letter != 'L' || steps == 10){ //if one of these is satisfied, the run has ended
                 if(current_letter == 'B'){ //if it ends successfully
                     run_steps[successful_runs] = steps;
                     successful_runs += 1;
@@ -22,8 +22,12 @@ double map_prob(int position[2], char map[9][9], double *avg_steps, double *succ
             }
             int move_val = rand() % 8; //if the run has not ended, make the next random move
             int move[2] = {moves[move_val][0], moves[move_val][1]};
-            current_position[0] = current_position[0] + move[0];
-            current_position[1] = current_position[1] + move[1];
+            int next_postion[2] = {current_position[0] + move[0], current_position[1] + move[1]};
+            if(!(next_postion[0] > 8) && !(next_postion[0] < 0) && !(next_postion[1] > 8) && !(next_postion[1] < 0)){
+                current_position[0] = next_postion[0];
+                current_position[1] = next_postion[1];
+            }
+
         }
     }
     if(successful_runs != 0){
