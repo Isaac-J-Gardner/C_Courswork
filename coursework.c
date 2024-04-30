@@ -56,18 +56,22 @@ int main(){
     FILE *fptr; 
     fptr = fopen("island_map.txt", "r");
     char temp;
+    int N_of_reads = 0;
     if(fptr != NULL){ //if the file could be found/opened
         for (int row = 0; row < 9; row++){
             for (int col = 0; col < 9; col++){
-                fscanf(fptr, "%c ", &temp);
-                if(temp != 'B' && temp != 'L' && temp != 'V' && temp != 'D' && temp != 'W'){
+                if(fscanf(fptr, "%c ", &temp) == EOF){ //if we get the End Of File early, it is not formatted correctly
                     printf("Error!");
                     return 1;
                 }
-                map[row][col] = temp;
+                if(temp != 'B' && temp != 'L' && temp != 'V' && temp != 'D' && temp != 'W'){ //if its not any of these, its not formatted correctly
+                    printf("Error!");
+                    return 1;
+                }
+                map[row][col] = temp; //insert into the array
             }
         }
-        if(fscanf(fptr, "%c ", &temp) != EOF){
+        if(fscanf(fptr, "%c ", &temp) != EOF){ //if after 81 reads, we are not at the end of the file, it is not formatted correctly
             printf("Error!");
             return 1;
         }
